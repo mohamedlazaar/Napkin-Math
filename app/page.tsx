@@ -1,7 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { site } from '@/site.config';
-import { AdSlot } from '@/components/ads/AdSlot';
 import { JsonLd } from '@/components/JsonLd';
 import { getAllCalculators, getCategories } from '@/lib/registry';
 import { buildMetadata } from '@/lib/seo';
@@ -49,8 +48,6 @@ export default function HomePage() {
             no account, no data collection, everything runs in your browser.
           </p>
         </section>
-
-        <AdSlot placement="header" className="my-8" />
 
         {/* Every tool is linked from here — a flat, fully crawlable index. */}
         {categories.map((cat) => (
@@ -120,8 +117,6 @@ export default function HomePage() {
             without thinking about it.
           </p>
         </section>
-
-        <AdSlot placement="footer" className="mt-10" />
       </div>
     </>
   );

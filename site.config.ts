@@ -25,8 +25,8 @@ export const site = {
   publisher: 'Napkin Math',
   contactEmail: 'hello@example.com',
 
-  // Ad network config lives in data/ad-network.ts — it is network-agnostic and
-  // takes whatever snippet your provider gives you.
+  // Ads: the Google AdSense loader is in app/layout.tsx <head>. Placement is
+  // handled by AdSense Auto ads, so there is no per-slot markup in the pages.
 
   /** Google Search Console verification. Unrelated to ads; keep it. */
   googleSiteVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',

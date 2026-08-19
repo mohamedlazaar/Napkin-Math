@@ -59,7 +59,6 @@ data/
   calculators/index.ts     ← REGISTER CALCULATORS HERE (the one file that matters)
   calculators/cac.ts       ← One calculator = one file. Copy this to add a tool.
   affiliates.ts            ← Your affiliate offers.
-  ad-network.ts            ← YOUR AD NETWORK GOES HERE (any provider).
 lib/
   types.ts                 The shape of a calculator config.
   formulas.ts              ← Pure maths. The ONLY calculator code sent to the browser.
@@ -69,8 +68,6 @@ lib/
 components/
   CalculatorPageView.tsx   The whole page body, shared by calculators and variants.
   CalculatorWidget.tsx     The single client component on the site.
-  ads/AdSlot.tsx           One ad placement, height-reserved. Network-agnostic.
-  ads/AdNetworkScript.tsx  Loads your network's script once, after interactive.
 app/
   [slug]/page.tsx          Every calculator page. One file, all tools.
   [slug]/[variant]/page.tsx  Every programmatic long-tail page.
@@ -143,64 +140,29 @@ component.
 
 ---
 
-## Adding your ad network
+## Ads (Google AdSense)
 
-The ad layer is **network-agnostic**. There is no AdSense code in this repo — every
-placement is just the HTML snippet your network gives you, so Media.net, Ezoic,
-Adsterra, Monetag, Infolinks, a header-bidding partner or a direct sponsor all drop
-in the same way.
+The AdSense loader lives in the `<head>` of `app/layout.tsx`:
 
-Everything lives in **`data/ad-network.ts`**:
-
-```ts
-export const adNetwork = {
-  enabled: true,                      // master switch
-  displayName: 'Media.net',           // shown in the privacy policy
-  preconnect: ['https://contextual.media.net'],
-  loader: { src: '', inline: '' },    // the one-time script they give you
-  slots: {
-    header: { html: '<paste their snippet>', ... },
-    inContent: { html: '...', ... },
-    inContentSecondary: { html: '...', ... },
-    sidebar: { html: '...', ... },
-    footer: { html: '...', ... },
-  },
-};
+```tsx
+<script
+  async
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1376344507072580"
+  crossOrigin="anonymous"
+/>
 ```
 
-Worked examples for Media.net, Ezoic, Adsterra/Monetag, Infolinks and direct
-sponsors are in the comment block at the bottom of that file.
-
-**Until a slot has a snippet, it renders a labelled grey placeholder of exactly the
-same height as the real ad.** That is deliberate: your layout — and your CLS score —
-are identical before and after you switch ads on.
-
-> **Why raw snippets work here.** `AdSlot` is a React Server Component, so the
-> snippet is baked into the static HTML at build time. Scripts present in the initial
-> document execute normally — unlike scripts injected client-side via `innerHTML`,
-> which browsers refuse to run. Nothing in the ad path is ever hydrated.
-
-Placements per page: header leaderboard, in-content rectangle after the calculator,
-a second in-content rectangle before the FAQ, a sticky 300x600 sidebar (desktop
-only), and a footer rectangle.
-
-### Picking a network
-
-| Network | Traffic minimum | Notes |
-|---|---|---|
-| **Media.net** | Quality review, no hard floor | Yahoo/Bing demand, fully independent of Google. Best fit for US/UK/CA B2B traffic. |
-| **Ezoic** | None | Big lift in fill and testing, but it is a Google Certified Publishing Partner — confirm with them that a prior Google ban doesn't block you. |
-| **Journey by Mediavine** | ~10k sessions/mo | Step up from Ezoic once traffic exists. |
-| **Mediavine / Raptive** | 50k / 100k sessions/mo | Highest RPMs. A later goal, not a starting point. |
-| **Adsterra / Monetag** | Effectively none | Will approve almost anyone, but the high-paying formats are popunders and push notifications. They will damage Core Web Vitals, bounce rate, and the affiliate conversions that are worth more than the ad impressions. |
-| **Infolinks** | Low | In-text ads; runs alongside another network rather than instead of one. |
+That tag is the whole ad layer. There are **no per-slot components in the page
+tree** — placement is left to AdSense Auto ads, which you configure in the AdSense
+dashboard (site → Auto ads) rather than in this codebase. To change the publisher
+ID, edit the `client=` parameter in that one file.
 
 ### Before you apply
 
-- `/privacy` and `/about` exist and are linked in the footer — every network checks
-  for both. **Read them and replace the bracketed placeholders**, especially
-  `displayName` in `data/ad-network.ts` (which the privacy policy renders) and the
-  analytics paragraph. An inaccurate ad disclosure is the specific thing that gets
+- `/privacy` and `/about` exist and are linked in the footer — AdSense checks for
+  both. **Read them and replace the remaining bracketed placeholders**, especially
+  the analytics paragraph in `/privacy`. The advertising section already names
+  Google AdSense; an inaccurate ad disclosure is the specific thing that gets
   flagged in review.
 - Set `contactEmail` and `publisher` in `site.config.ts`.
 

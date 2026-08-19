@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { site } from '@/site.config';
-import { adNetwork } from '@/data/ad-network';
 import { buildMetadata } from '@/lib/seo';
 
 export const metadata: Metadata = buildMetadata({
@@ -34,16 +33,31 @@ export default function PrivacyPage() {
         <section>
           <h2 className="text-xl font-bold text-ink">Advertising</h2>
           <p className="mt-2">
-            This site is supported by advertising. We use {adNetwork.displayName} to
-            serve ads. Third-party vendors use cookies and similar technologies to
+            This site is supported by advertising. We use Google AdSense to serve
+            ads. Google and its partners use cookies and similar technologies to
             serve ads based on your prior visits to this and other websites.
           </p>
           <p className="mt-2">
-            {/* Name your actual network above (data/ad-network.ts → displayName)
-                and link ITS privacy policy here. An inaccurate disclosure is worse
-                than none — it is the part regulators and ad partners check. */}
-            You can review your ad network&apos;s privacy practices in their own
-            policy, and opt out of third-party vendors&apos; use of cookies for
+            You can review how Google uses data from sites that use its services
+            in the{' '}
+            <a
+              className="text-brand-600 underline"
+              href="https://policies.google.com/technologies/partner-sites"
+              rel="noopener nofollow"
+              target="_blank"
+            >
+              Google privacy &amp; terms
+            </a>
+            , opt out of personalised advertising in{' '}
+            <a
+              className="text-brand-600 underline"
+              href="https://myadcenter.google.com/"
+              rel="noopener nofollow"
+              target="_blank"
+            >
+              Google Ad Center
+            </a>
+            , and opt out of third-party vendors&apos; use of cookies for
             personalised advertising at{' '}
             <a
               className="text-brand-600 underline"
@@ -70,7 +84,7 @@ export default function PrivacyPage() {
           <h2 className="text-xl font-bold text-ink">Analytics</h2>
           <p className="mt-2">
             {/* If you add analytics, name the provider here. Leaving this
-                accurate matters for both ad-network review and GDPR. */}
+                accurate matters for both AdSense review and GDPR. */}
             We use [ANALYTICS PROVIDER, e.g. Google Analytics / Plausible / none] to
             understand aggregate traffic patterns. Replace this paragraph with an
             accurate description of what you actually run, or delete it if you run

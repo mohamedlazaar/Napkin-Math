@@ -1,7 +1,6 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { site } from '@/site.config';
-import { AdNetworkScript, AdNetworkPreconnect } from '@/components/ads/AdNetworkScript';
 import { Header, Footer } from '@/components/Layout';
 import { JsonLd } from '@/components/JsonLd';
 
@@ -30,11 +29,15 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      {/* No manual <head>: React hoists <link> tags into it automatically, and
-          hand-writing one risks emitting a stray text node there (invalid HTML,
-          and a hydration error). The component returns null — never a string —
-          for the same reason: an empty string is falsy but still RENDERS. */}
-      <AdNetworkPreconnect />
+      <head>
+        {/* Google AdSense. Auto ads are placed by Google from this tag alone —
+            there are no per-slot components in the page tree. */}
+        <script
+          async
+          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1376344507072580"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="flex min-h-screen flex-col">
         <JsonLd
           data={{
@@ -57,7 +60,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </div>
         <Footer />
-        <AdNetworkScript />
       </body>
     </html>
   );

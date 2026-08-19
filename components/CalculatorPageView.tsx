@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { AdSlot } from '@/components/ads/AdSlot';
 import { AffiliateCTA } from '@/components/AffiliateCTA';
 import { CalculatorWidget } from '@/components/CalculatorWidget';
 import { Faq } from '@/components/Faq';
@@ -44,10 +43,6 @@ export function CalculatorPageView({
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-6">
-      {/* Header ad. Above the fold but below the H1's line of sight, and
-          height-reserved so it can't push the calculator down. */}
-      <AdSlot placement="header" className="mb-6" />
-
       <div className="lg:flex lg:gap-10">
         <main className="min-w-0 flex-1">
           <Breadcrumbs trail={trail} />
@@ -116,8 +111,6 @@ export function CalculatorPageView({
             </>
           )}
 
-          <AdSlot placement="inContent" className="my-10" />
-
           {/* The 300–500 word explanation. Shared across the calculator and all
               of its variants, which is correct: the underlying method doesn't
               change by industry — the inputs and benchmarks do. */}
@@ -149,8 +142,6 @@ export function CalculatorPageView({
 
           <AffiliateCTA category={calc.category} />
 
-          <AdSlot placement="inContentSecondary" className="my-10" />
-
           <Faq items={faqs} />
 
           {variant ? (
@@ -170,14 +161,11 @@ export function CalculatorPageView({
           )}
 
           <RelatedTools items={relatedOrSiblings} />
-
-          <AdSlot placement="footer" className="mt-10" />
         </main>
 
         {/* Sidebar: desktop only, so mobile keeps its short DOM and fast LCP. */}
         <aside className="hidden w-[300px] shrink-0 lg:block">
           <div className="sticky top-6 space-y-6">
-            <AdSlot placement="sidebar" />
             {relatedOrSiblings.length > 0 && (
               <nav aria-label="More calculators" className="rounded-xl border border-slate-200 p-4">
                 <p className="text-sm font-semibold text-ink">More calculators</p>
