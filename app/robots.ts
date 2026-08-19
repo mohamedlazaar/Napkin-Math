@@ -9,9 +9,10 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
-        // Nothing here is private; the only thing worth excluding is Next's
-        // internal build output, which shouldn't be crawled as pages.
-        disallow: ['/_next/'],
+        // Nothing here is private. /my-tools is excluded because it is empty
+        // for anyone but the visitor whose browser filled it — there is
+        // nothing there to crawl or rank.
+        disallow: ['/_next/', '/my-tools'],
       },
       // Ad networks run their own crawlers to read page content and target ads.
       // A blocked ad crawler means untargeted (low-paying) ads or no fill at all,

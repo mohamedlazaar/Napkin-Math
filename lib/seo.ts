@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { site } from '@/site.config';
+import type { GlossaryTerm } from '@/data/glossary';
 import type { CalculatorConfig, CalculatorVariant, Faq } from './types';
 
 export function absoluteUrl(path: string): string {
@@ -8,8 +9,8 @@ export function absoluteUrl(path: string): string {
 
 /**
  * Single source of truth for per-page metadata. Every page builds its title,
- * description, canonical and OpenGraph tags through here so they can never
- * drift apart.
+ * description, canonical, OpenGraph and Twitter tags through here so they can
+ * never drift apart.
  */
 export function buildMetadata(opts: {
   title: string;
@@ -17,9 +18,12 @@ export function buildMetadata(opts: {
   path: string;
   keywords?: string[];
   type?: 'website' | 'article';
+  /** Set false for thin or duplicative pages that should stay out of the index. */
+  index?: boolean;
 }): Metadata {
   const url = absoluteUrl(opts.path);
   const title = `${opts.title} | ${site.titleSuffix}`;
+  const index = opts.index !== false;
 
   return {
     title,
@@ -35,15 +39,23 @@ export function buildMetadata(opts: {
       type: opts.type || 'website',
     },
     twitter: {
-      card: 'summary',
+      // The generated card image is 1200×630, which needs the large variant.
+      card: 'summary_large_image',
       title,
       description: opts.description,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: { index: true, follow: true, 'max-snippet': -1, 'max-image-preview': 'large' },
-    },
+    robots: index
+      ? {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            'max-snippet': -1,
+            'max-image-preview': 'large',
+          },
+        }
+      : { index: false, follow: true },
   };
 }
 
@@ -67,18 +79,11 @@ export function webApplicationSchema(opts: {
     operatingSystem: 'Any',
     browserRequirements: 'Requires JavaScript',
     keywords: opts.keywords?.join(', '),
+    isAccessibleForFree: true,
     // The tool is genuinely free and needs no account — say so, because it is
     // an eligibility signal Google actually reads.
-    offers: {
-      '@type': 'Offer',
-      price: '0',
-      priceCurrency: 'USD',
-    },
-    publisher: {
-      '@type': 'Organization',
-      name: site.publisher,
-      url: site.url,
-    },
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+    publisher: { '@id': absoluteUrl('/#organization') },
   };
 }
 
@@ -103,6 +108,48 @@ export function breadcrumbSchema(trail: { name: string; path: string }[]) {
       position: i + 1,
       name: item.name,
       item: absoluteUrl(item.path),
+    })),
+  };
+}
+
+/** Glossary entries are DefinedTerm nodes inside one site-wide glossary. */
+export function definedTermSchema(term: GlossaryTerm) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'DefinedTerm',
+    '@id': absoluteUrl(`/glossary/${term.slug}`),
+    name: term.term,
+    alternateName: term.abbr,
+    description: term.short,
+    url: absoluteUrl(`/glossary/${term.slug}`),
+    inDefinedTermSet: {
+      '@type': 'DefinedTermSet',
+      '@id': absoluteUrl('/glossary'),
+      name: `${site.name} business metrics glossary`,
+      url: absoluteUrl('/glossary'),
+    },
+  };
+}
+
+/**
+ * HowTo describes the steps of a worked example. Only emit it where the steps
+ * are genuinely procedural — a fabricated HowTo is a structured-data penalty
+ * waiting to happen.
+ */
+export function howToSchema(opts: {
+  name: string;
+  description: string;
+  steps: string[];
+}) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'HowTo',
+    name: opts.name,
+    description: opts.description,
+    step: opts.steps.map((text, i) => ({
+      '@type': 'HowToStep',
+      position: i + 1,
+      text,
     })),
   };
 }

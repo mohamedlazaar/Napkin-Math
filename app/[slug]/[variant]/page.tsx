@@ -3,10 +3,12 @@ import { notFound } from 'next/navigation';
 import { CalculatorPageView } from '@/components/CalculatorPageView';
 import { JsonLd } from '@/components/JsonLd';
 import { getAllCalculators, getCalculator, getVariant } from '@/lib/registry';
+import { categoryOf } from '@/lib/taxonomy';
 import {
   breadcrumbSchema,
   buildMetadata,
   faqPageSchema,
+  howToSchema,
   variantDescription,
   variantFaqs,
   variantH1,
@@ -15,12 +17,13 @@ import {
 } from '@/lib/seo';
 
 /**
- * PROGRAMMATIC SEO ROUTE.
+ * INDUSTRY-SPECIFIC PAGES.
  *
- * Every variant listed on every calculator becomes a static page here. With 8
- * calculators × ~12 variants you get roughly 100 indexable pages from this one
- * file — each with its own title, description, canonical, benchmarks, cost
- * list, worked example and FAQ entries.
+ * These are only worth indexing because each variant carries genuinely
+ * different content: its own intro, its own cost lines, its own benchmark
+ * range, its own worked example with different numbers, and usually its own
+ * FAQ entries. A variant that could not fill those honestly does not get
+ * added — near-duplicate pages are a liability, not an SEO asset.
  */
 
 export const dynamicParams = false;
@@ -64,6 +67,9 @@ export default async function VariantPage({
   const variant = calc && getVariant(calc, variantSlug);
   if (!calc || !variant) notFound();
 
+  const category = categoryOf(calc.slug);
+  const path = `/${calc.slug}/${variant.slug}`;
+
   return (
     <>
       <JsonLd
@@ -71,14 +77,22 @@ export default async function VariantPage({
           webApplicationSchema({
             name: variantH1(calc, variant),
             description: variantDescription(calc, variant),
-            path: `/${calc.slug}/${variant.slug}`,
+            path,
           }),
           faqPageSchema(variantFaqs(calc, variant)),
           breadcrumbSchema([
             { name: 'Home', path: '/' },
+            ...(category
+              ? [{ name: category.label, path: `/calculators/${category.id}` }]
+              : [{ name: 'Calculators', path: '/calculators' }]),
             { name: calc.name, path: `/${calc.slug}` },
-            { name: `For ${variant.label}`, path: `/${calc.slug}/${variant.slug}` },
+            { name: `For ${variant.label}`, path },
           ]),
+          howToSchema({
+            name: `How to calculate ${calc.name.replace(/ Calculator$/i, '')} for ${variant.label}`,
+            description: variant.example.scenario,
+            steps: variant.example.steps,
+          }),
         ]}
       />
       <CalculatorPageView calc={calc} variant={variant} />

@@ -44,6 +44,13 @@ export interface CalculatorResult {
   /** Exactly one result should be primary — it gets the big treatment. */
   primary?: boolean;
   help?: string;
+  /**
+   * Which direction is an improvement. Set this on the primary result so
+   * scenario comparison can mark a winner; without it, comparison shows the
+   * numbers side by side and declines to pick one. Never guess the direction —
+   * lower CAC is better, lower LTV is not.
+   */
+  betterWhen?: 'higher' | 'lower';
 }
 
 export interface Faq {

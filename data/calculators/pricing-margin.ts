@@ -9,7 +9,7 @@ export const pricingMargin: CalculatorConfig = {
     'Free profit margin calculator. Enter cost and selling price to get gross margin, profit per unit, markup percentage and the price you need for any target margin.',
   blurb:
     'Gross margin, markup and the price you need to hit a target margin — three numbers people constantly confuse.',
-  category: 'Pricing & Profitability',
+  category: 'profitability',
   keywords: [
     'margin calculator',
     'profit margin calculator',
@@ -70,6 +70,7 @@ export const pricingMargin: CalculatorConfig = {
       label: 'Gross margin',
       format: 'percent',
       primary: true,
+      betterWhen: 'higher',
       help: 'Profit as a share of the selling price. This is the one to quote.',
     },
     { id: 'profitPerUnit', label: 'Gross profit per unit', format: 'currency2' },

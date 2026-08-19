@@ -9,7 +9,7 @@ export const breakEven: CalculatorConfig = {
     'Free SaaS break-even calculator. Find how many customers you need to cover fixed costs, the revenue that implies, the CAC investment to get there and the churn you must replace.',
   blurb:
     'How many customers you need to cover your costs — and how many you must add each month just to stand still.',
-  category: 'SaaS & Growth',
+  category: 'profitability',
   keywords: [
     'saas break even calculator',
     'break even customers calculator',
@@ -80,6 +80,7 @@ export const breakEven: CalculatorConfig = {
       label: 'Customers needed to break even',
       format: 'number',
       primary: true,
+      betterWhen: 'lower',
       help: 'The point at which gross profit exactly covers your fixed costs.',
     },
     { id: 'contributionPerCustomer', label: 'Gross profit per customer / month', format: 'currency' },

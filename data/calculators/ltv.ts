@@ -9,7 +9,7 @@ export const ltv: CalculatorConfig = {
     'Free customer lifetime value calculator. Enter revenue per customer, gross margin and churn rate to get LTV, average customer lifetime and gross profit. Instant, no signup.',
   blurb:
     'Find out what a customer is worth over their whole relationship with you — on margin, not revenue.',
-  category: 'SaaS & Growth',
+  category: 'customer-value',
   keywords: [
     'ltv calculator',
     'customer lifetime value calculator',
@@ -60,6 +60,7 @@ export const ltv: CalculatorConfig = {
       label: 'Lifetime value (gross profit)',
       format: 'currency',
       primary: true,
+      betterWhen: 'higher',
       help: 'The number to compare against CAC. Based on margin, not revenue.',
     },
     { id: 'avgLifetimeMonths', label: 'Average customer lifetime', format: 'months' },

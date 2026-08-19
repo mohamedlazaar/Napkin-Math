@@ -9,7 +9,7 @@ export const ltvCac: CalculatorConfig = {
     'Free LTV:CAC ratio calculator. Enter lifetime value and acquisition cost to see your ratio, profit per customer and CAC payback period against the 3:1 benchmark.',
   blurb:
     'The single number that says whether your growth engine makes money or burns it.',
-  category: 'SaaS & Growth',
+  category: 'customer-value',
   keywords: [
     'ltv cac ratio calculator',
     'ltv to cac ratio',
@@ -69,6 +69,7 @@ export const ltvCac: CalculatorConfig = {
       label: 'LTV:CAC ratio',
       format: 'ratio',
       primary: true,
+      betterWhen: 'higher',
       help: 'Around 3:1 is healthy. Below 1:1 you lose money on every customer.',
     },
     { id: 'profitPerCustomer', label: 'Lifetime profit per customer', format: 'currency' },

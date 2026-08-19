@@ -9,7 +9,7 @@ export const roas: CalculatorConfig = {
     'Free ROAS calculator. Enter revenue and ad spend to get return on ad spend, your break-even ROAS, profit after ads and ACOS. Instant, no signup.',
   blurb:
     'See your return on ad spend — and the break-even ROAS your margin actually requires.',
-  category: 'Advertising & Marketing',
+  category: 'acquisition',
   keywords: [
     'roas calculator',
     'return on ad spend calculator',
@@ -68,6 +68,7 @@ export const roas: CalculatorConfig = {
       label: 'ROAS',
       format: 'ratio',
       primary: true,
+      betterWhen: 'higher',
       help: 'Revenue returned per $1 of ad cost. Compare it against break-even below.',
     },
     {

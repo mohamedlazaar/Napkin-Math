@@ -28,8 +28,9 @@ export const affiliateOffers: Record<string, AffiliateOffer> = {
     url: '',
   },
 
-  // Example of a category override. Key must match a calculator's `category`.
-  // 'SaaS & Growth': {
+  // Example of a category override. The key must match a category id from
+  // lib/taxonomy.ts: acquisition | customer-value | saas-metrics | profitability
+  // 'saas-metrics': {
   //   heading: 'Your SaaS-specific offer headline',
   //   body: 'One or two sentences on why it helps with this exact metric.',
   //   ctaLabel: 'Try it free →',

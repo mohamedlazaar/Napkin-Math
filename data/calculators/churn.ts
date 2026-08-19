@@ -9,7 +9,7 @@ export const churn: CalculatorConfig = {
     'Free churn rate calculator. Get customer churn, retention rate, average customer lifetime, gross revenue churn and net revenue retention from your monthly numbers.',
   blurb:
     'Customer churn, revenue churn and net revenue retention — the three numbers that are never the same.',
-  category: 'SaaS & Growth',
+  category: 'saas-metrics',
   keywords: [
     'churn rate calculator',
     'customer churn calculator',
@@ -79,6 +79,7 @@ export const churn: CalculatorConfig = {
       label: 'Customer churn rate',
       format: 'percent',
       primary: true,
+      betterWhen: 'lower',
       help: 'The share of your starting customer base that left this period.',
     },
     { id: 'retentionPct', label: 'Customer retention rate', format: 'percent' },

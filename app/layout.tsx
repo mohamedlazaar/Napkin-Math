@@ -3,6 +3,7 @@ import './globals.css';
 import { site } from '@/site.config';
 import { Header, Footer } from '@/components/Layout';
 import { JsonLd } from '@/components/JsonLd';
+import { absoluteUrl } from '@/lib/seo';
 
 export const metadata: Metadata = {
   // metadataBase makes every relative canonical/OG url absolute automatically.
@@ -13,6 +14,9 @@ export const metadata: Metadata = {
   },
   description: site.description,
   applicationName: site.name,
+  authors: [{ name: site.author }],
+  creator: site.author,
+  publisher: site.publisher,
   referrer: 'strict-origin-when-cross-origin',
   formatDetection: { telephone: false, address: false, email: false },
   verification: site.googleSiteVerification
@@ -23,6 +27,9 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: 'device-width',
   initialScale: 1,
+  // Never lock zoom — pinch-to-zoom is an accessibility requirement, not a
+  // styling inconvenience.
+  maximumScale: 5,
   themeColor: '#ffffff',
 };
 
@@ -30,35 +37,54 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        {/* Google AdSense. Auto ads are placed by Google from this tag alone —
-            there are no per-slot components in the page tree. */}
+        {/* Google AdSense. Placement of manual units is controlled in
+            components/AdUnit.tsx; anything else on the page comes from Auto ads. */}
         <script
           async
-          src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1376344507072580"
+          src={`https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${site.ads.client}`}
           crossOrigin="anonymous"
         />
       </head>
       <body className="flex min-h-screen flex-col">
         <JsonLd
-          data={{
-            '@context': 'https://schema.org',
-            '@type': 'WebSite',
-            name: site.name,
-            url: site.url,
-            description: site.description,
-            publisher: { '@type': 'Organization', name: site.publisher, url: site.url },
-          }}
+          data={[
+            {
+              '@context': 'https://schema.org',
+              '@type': 'WebSite',
+              name: site.name,
+              url: site.url,
+              description: site.description,
+              inLanguage: 'en',
+              publisher: { '@id': absoluteUrl('/#organization') },
+              potentialAction: {
+                '@type': 'SearchAction',
+                target: {
+                  '@type': 'EntryPoint',
+                  urlTemplate: absoluteUrl('/calculators?q={search_term_string}'),
+                },
+                'query-input': 'required name=search_term_string',
+              },
+            },
+            {
+              '@context': 'https://schema.org',
+              '@type': 'Organization',
+              '@id': absoluteUrl('/#organization'),
+              name: site.publisher,
+              url: site.url,
+              email: site.contactEmail,
+              founder: { '@type': 'Person', name: site.author },
+            },
+          ]}
         />
-        <a
-          href="#main"
-          className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-ink focus:px-4 focus:py-2 focus:text-white"
-        >
+
+        <a href="#main" className="skip-link">
           Skip to content
         </a>
+
         <Header />
-        <div id="main" className="flex-1">
+        <main id="main" className="flex-1">
           {children}
-        </div>
+        </main>
         <Footer />
       </body>
     </html>

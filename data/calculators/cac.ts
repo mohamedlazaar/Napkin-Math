@@ -19,7 +19,7 @@ export const cac: CalculatorConfig = {
     'Free customer acquisition cost calculator. Enter your sales and marketing spend and new customers to get CAC plus your CAC payback period. Instant, no signup.',
   blurb:
     'Work out what each new customer actually costs you — and how many months it takes to earn it back.',
-  category: 'SaaS & Growth',
+  category: 'acquisition',
   keywords: [
     'cac calculator',
     'customer acquisition cost calculator',
@@ -98,6 +98,7 @@ export const cac: CalculatorConfig = {
       label: 'Customer acquisition cost',
       format: 'currency',
       primary: true,
+      betterWhen: 'lower',
       help: 'What you paid, on average, for each new customer.',
     },
     {

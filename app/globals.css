@@ -6,10 +6,13 @@
   html {
     -webkit-text-size-adjust: 100%;
     scroll-behavior: smooth;
+    /* Sticky headers must not hide the target of an in-page anchor. */
+    scroll-padding-top: 5rem;
   }
 
   body {
-    @apply bg-white text-ink antialiased;
+    @apply bg-surface text-ink antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04';
   }
 
   /* Number inputs: hide the spinners. They're tiny click targets that
@@ -29,8 +32,13 @@
     display: none;
   }
 
+  /* One visible focus ring for the entire site. Never remove it. */
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand-600;
+    @apply outline-none ring-2 ring-brand-500 ring-offset-2 ring-offset-white;
+  }
+
+  ::selection {
+    @apply bg-brand-100 text-brand-900;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -43,5 +51,134 @@
       animation-duration: 0.01ms !important;
       transition-duration: 0.01ms !important;
     }
+  }
+}
+
+@layer components {
+  /* ---------------------------------------------------------------
+   * The component vocabulary. Every surface on the site is one of
+   * these — that consistency is what makes it read as one product.
+   * --------------------------------------------------------------- */
+
+  .shell {
+    @apply mx-auto w-full max-w-shell px-4 sm:px-6;
+  }
+
+  .card {
+    @apply rounded-xl border border-line bg-surface-raised shadow-card;
+  }
+
+  .card-interactive {
+    @apply card transition duration-150 hover:-translate-y-px hover:border-brand-300 hover:shadow-raised focus-within:border-brand-300;
+  }
+
+  /* Buttons ------------------------------------------------------- */
+  .btn {
+    @apply inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg
+           text-[0.9375rem] font-semibold leading-none transition duration-150
+           disabled:cursor-not-allowed disabled:opacity-50;
+    /* 44px min target on touch, per WCAG 2.5.5. */
+    min-height: 2.75rem;
+    padding: 0 1.125rem;
+  }
+  .btn-sm {
+    @apply text-sm;
+    min-height: 2.25rem;
+    padding: 0 0.75rem;
+  }
+  .btn-primary {
+    @apply btn bg-brand-600 text-white hover:bg-brand-700 active:bg-brand-800;
+  }
+  .btn-secondary {
+    @apply btn border border-line-strong bg-surface text-ink hover:border-ink-faint hover:bg-surface-sunken;
+  }
+  .btn-ghost {
+    @apply btn text-ink-soft hover:bg-surface-sunken hover:text-ink;
+  }
+  .btn-inverse {
+    @apply btn border border-white/15 bg-white/10 text-white hover:bg-white/20;
+  }
+
+  /* Inputs -------------------------------------------------------- */
+  .input {
+    @apply w-full rounded-lg border border-line-strong bg-surface px-3 text-[0.9375rem] text-ink
+           tabular-nums shadow-none transition
+           placeholder:text-ink-faint
+           hover:border-ink-faint
+           focus:border-brand-500 focus:outline-none focus:ring-2 focus:ring-brand-500/25;
+    /* 44px: comfortable thumb target, and stops iOS zooming on focus. */
+    height: 2.75rem;
+    font-size: 16px;
+  }
+  .input-invalid {
+    @apply border-critical focus:border-critical focus:ring-critical/25;
+  }
+
+  .label {
+    @apply block text-[0.8125rem] font-semibold text-ink;
+  }
+
+  /* Tags & badges ------------------------------------------------- */
+  .tag {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-line bg-surface-sunken
+           px-2.5 py-1 text-xs font-medium text-ink-soft;
+  }
+  .tag-interactive {
+    @apply tag transition hover:border-brand-300 hover:bg-brand-50 hover:text-brand-700;
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1.5 rounded-md px-2 py-1 text-[0.6875rem] font-bold uppercase tracking-wider;
+  }
+  .badge-healthy {
+    @apply badge bg-healthy-soft text-healthy;
+  }
+  .badge-warning {
+    @apply badge bg-warning-soft text-warning;
+  }
+  .badge-critical {
+    @apply badge bg-critical-soft text-critical;
+  }
+  .badge-neutral {
+    @apply badge bg-surface-sunken text-ink-muted;
+  }
+
+  /* Typography ---------------------------------------------------- */
+  .eyebrow {
+    @apply text-[0.6875rem] font-bold uppercase tracking-[0.12em] text-ink-muted;
+  }
+  .prose-body {
+    @apply text-[0.9375rem] leading-[1.75] text-ink-soft;
+  }
+  .formula {
+    @apply rounded-lg border border-line bg-surface-sunken px-4 py-3 font-mono text-[0.8125rem]
+           leading-relaxed text-ink-soft;
+  }
+
+  /* Kbd ----------------------------------------------------------- */
+  .kbd {
+    @apply inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded border border-line-strong
+           bg-surface px-1.5 font-sans text-[0.6875rem] font-semibold text-ink-muted;
+  }
+
+  /* Skip link ----------------------------------------------------- */
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[100]
+           focus:rounded-lg focus:bg-ink focus:px-4 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-white;
+  }
+}
+
+@layer utilities {
+  /* Wide content (tables, scenario grids) scrolls inside its own box so the
+     page body never scrolls horizontally on a 375px screen. */
+  .scroll-x {
+    @apply -mx-4 overflow-x-auto px-4 sm:mx-0 sm:px-0;
+    scrollbar-width: thin;
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    scrollbar-width: none;
   }
 }

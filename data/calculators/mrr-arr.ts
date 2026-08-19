@@ -9,7 +9,7 @@ export const mrrArr: CalculatorConfig = {
     'Free MRR and ARR calculator. Enter new, expansion, contraction and churned MRR to get ending MRR, net new MRR, ARR, growth rate and your SaaS quick ratio.',
   blurb:
     'Track recurring revenue properly: net new MRR, ARR, growth rate and the quick ratio.',
-  category: 'SaaS & Growth',
+  category: 'saas-metrics',
   keywords: [
     'mrr calculator',
     'arr calculator',
@@ -76,6 +76,7 @@ export const mrrArr: CalculatorConfig = {
       label: 'Ending MRR',
       format: 'currency',
       primary: true,
+      betterWhen: 'higher',
       help: 'Where you finish the month. Starting MRR plus net new.',
     },
     { id: 'netNewMrr', label: 'Net new MRR', format: 'currency' },
