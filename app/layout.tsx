@@ -37,6 +37,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        <meta name="google-adsense-account" content="ca-pub-1376344507072580" />
         {/* Google AdSense. Placement of manual units is controlled in
             components/AdUnit.tsx; anything else on the page comes from Auto ads. */}
         <script

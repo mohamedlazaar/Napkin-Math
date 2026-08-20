@@ -147,7 +147,7 @@ The AdSense loader lives in the `<head>` of `app/layout.tsx`:
 ```tsx
 <script
   async
-  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1376344507072580"
+  src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client="
   crossOrigin="anonymous"
 />
 ```
