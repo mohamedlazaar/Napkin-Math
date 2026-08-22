@@ -137,7 +137,11 @@ export default function CalculatorsPage() {
         </section>
 
         {/* Below all content, clearly separated, never near an input. */}
-        <AdUnit slot={site.ads.slots.directoryEnd} className="mt-14" />
+        <AdUnit
+          slot={site.ads.slots.directoryEnd}
+          format="multiplex"
+          className="mt-14"
+        />
       </div>
     </>
   );

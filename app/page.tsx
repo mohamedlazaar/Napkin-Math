@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { site } from '@/site.config';
 import { JsonLd } from '@/components/JsonLd';
+import { AdUnit } from '@/components/AdUnit';
 import { CalculatorCard, toSummaries } from '@/components/CalculatorCard';
 import { GoalCards } from '@/components/GoalCards';
 import { HowItWorks, TrustPanel } from '@/components/HowItWorks';
@@ -261,6 +262,9 @@ export default function HomePage() {
             </p>
           </div>
         </section>
+
+        {/* Foot of the page, after everything worth reading. */}
+        <AdUnit slot={site.ads.slots.homeEnd} format="display" />
       </div>
     </>
   );

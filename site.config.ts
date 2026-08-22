@@ -37,10 +37,12 @@ export const site = {
   ads: {
     client: 'ca-pub-1376344507072580',
     slots: {
-      /** Below the article body, above the FAQ. Never beside the inputs. */
-      articleEnd: '',
-      /** Bottom of the calculator directory, below the fold. */
-      directoryEnd: '',
+      /** In-article unit. Below the article body, above the FAQ. Never beside the inputs. */
+      articleEnd: '7703895424',
+      /** Multiplex unit. Bottom of the calculator directory, below the fold. */
+      directoryEnd: '9828380366',
+      /** Responsive display unit. Foot of the homepage, after "What this is". */
+      homeEnd: '8239966520',
     },
   },
 

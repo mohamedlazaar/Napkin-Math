@@ -209,7 +209,11 @@ export function CalculatorPageView({
 
           {/* The single manual ad slot: after the article, before the FAQ.
               Never beside an input, never between inputs and result. */}
-          <AdUnit slot={site.ads.slots.articleEnd} className="mt-10" />
+          <AdUnit
+            slot={site.ads.slots.articleEnd}
+            format="in-article"
+            className="mt-10"
+          />
 
           <Faq items={faqs} />
         </div>
