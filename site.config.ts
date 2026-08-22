@@ -46,8 +46,14 @@ export const site = {
     },
   },
 
-  /** Google Search Console verification. Unrelated to ads; keep it. */
-  googleSiteVerification: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || '',
+  /**
+   * Google Search Console verification. Unrelated to ads; keep it.
+   * Rendered into <head> via metadata.verification in app/layout.tsx. The env
+   * var wins, so a different property can be verified per deployment.
+   */
+  googleSiteVerification:
+    process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION ||
+    'QxmY68sjP0s4TGOFwutzxMslGt1eOTw09m_-NiEIYg8',
 
   /**
    * Optional privacy-first analytics endpoint (Plausible-compatible). Unset =
